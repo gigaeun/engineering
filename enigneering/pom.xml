@@ -8,6 +8,7 @@
   <name>enigneering Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <properties>
+	 <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
      <org.springframework-version>5.0.5.RELEASE</org.springframework-version>
      <java-version>1.8</java-version>
      <org.slf4j-version>1.6.6</org.slf4j-version>
