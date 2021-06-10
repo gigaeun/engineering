@@ -1,8 +1,8 @@
 package controller.employees;
 
-import org.apache.maven.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,19 +20,16 @@ public class EmployeeController {
 	EmployeeNoService employeeNoService;
 	@Autowired
 	EmployeeListService  employeeListService;
-	
 	@RequestMapping("empList")
 	public String empList(Model model) {
 		employeeListService.empList(model);
 		return "employee/empList";
 	}
-	
 	@RequestMapping("empReget")
 	public String empReget(Model model) {
 		employeeNoService.getEmpNo(model);
 		return "employee/employeeForm";
 	}
-	
 	@RequestMapping(value="empJoin", method=RequestMethod.POST)
 	public String empJoin(EmployeeCommand employeeCommand) {
 		employeeService.insertEmp(employeeCommand);
