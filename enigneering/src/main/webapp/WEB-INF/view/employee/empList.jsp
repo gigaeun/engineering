@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +12,10 @@
 <table border=1>
 	<tr><td>사원번호</td><td>이름</td><td>부서명</td><td>이메일</td><td>전화번호</td></tr>
 	<c:forEach items="${empList}" var="dto">
-	<tr><td>${dto.empNo }</td><td>${dto.empName }</td><td>${dto.empDeptNumber }</td>
-	<td>${dto.empEmail }</td><td>${dto.empPhoneNumber }</td></tr>
+	<tr><td><a href="empInfo?empNo=${dto.empNo }">${dto.empNo }</a></td>
+		<td>${dto.empName }</td>
+		<td>${dto.empDeptNumber }</td><td>${dto.empEmail }</td>
+		<td>${dto.empPhoneNumber }</td></tr>
 	</c:forEach>
 </table>
 <a href="empReget">직원등록</a>
