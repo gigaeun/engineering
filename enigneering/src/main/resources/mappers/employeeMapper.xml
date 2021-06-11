@@ -9,8 +9,10 @@ EMP_EMAIL,EMP_PHONE_NUMBER,HIRE_DATE,SALARY
 </sql>
 
 <sql id="selectColumn">
-EMP_NO empNo,EMP_ID empId,EMP_PW empPw,EMP_NAME empName, EMP_DEPT_NUMBER empDeptNumber,
-EMP_EMAIL empEmail, EMP_PHONE_NUMBER empPhoneNumber, HIRE_DATE hireDate, SALARY
+EMP_NO empNo,EMP_ID empId,EMP_PW empPw,
+EMP_NAME empName, EMP_DEPT_NUMBER empDeptNumber,
+EMP_EMAIL empEmail, EMP_PHONE_NUMBER empPhoneNumber, 
+HIRE_DATE hireDate, SALARY
 </sql>
 
 <delete id="employeeDelete" parameterType="string">
@@ -21,14 +23,16 @@ EMP_EMAIL empEmail, EMP_PHONE_NUMBER empPhoneNumber, HIRE_DATE hireDate, SALARY
 <update id="employeeUpdate" parameterType="emp">
 	update employees
 	set EMP_DEPT_NUMBER= #{empDeptNumber}, EMP_EMAIL= #{empEmail}, 
-	EMP_PHONE_NUMBER= #{empPhoneNumber}, HIRE_DATE= #{hireDate}, SALARY= #{salary}
+	EMP_PHONE_NUMBER= #{empPhoneNumber}, HIRE_DATE= #{hireDate}, 
+	SALARY= #{salary}
 	where emp_no = #{empNo}
 </update>
 
 <insert id="employeeInsert" parameterType="emp">
 	insert into employees(<include refid="baseColumn" />)
-	values(#{empNo},#{empId},#{empPw},#{empName},#{empDeptNumber},
-			#{empEmail},#{empPhoneNumber},#{hireDate},#{salary})
+	values(#{empNo},#{empId},#{empPw},#{empName},
+		#{empDeptNumber}, #{empEmail}, #{empPhoneNumber},
+		#{hireDate},#{salary})
 </insert>
 
 <select id="empInfo" parameterType="string" resultType="emp">
