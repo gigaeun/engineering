@@ -1,6 +1,9 @@
 package controller.member;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,11 +11,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import command.MemberCommand;
+import model.AuthInfo;
+import service.member.MemberDeleteOkService;
 import service.member.MemberDeleteService;
+import service.member.MemberDetailService;
 import service.member.MemberInfoService;
 import service.member.MemberJoinService;
 import service.member.MemberListService;
 import service.member.MemberModifyService;
+import service.member.MemberPwChangeService;
+import service.member.MemberUpdateService;
 
 @Controller
 @RequestMapping("member")
@@ -27,6 +35,13 @@ public class MemberController {
 	MemberModifyService memberModifyService;
 	@Autowired
 	MemberDeleteService memberDeleteService;
+	@Autowired
+	MemberDetailService memberDetailService;
+	@Autowired
+	MemberUpdateService memberUpdateService;
+	@Autowired
+	MemberDeleteOkService memberDeleteOkService;
+	
 	@RequestMapping("agree")
 	public String agree() {
 		return "member/agree";
@@ -67,6 +82,80 @@ public class MemberController {
 	public String memDel(@RequestParam(value = "memId") String memId) {
 		memberDeleteService.memDel(memId);
 		return "redirect:memList";
+	}
+	@RequestMapping("memMyPage")
+	public String myPage() {
+		return "member/memMyPage";
+	}
+	@RequestMapping("myInfo")
+	public String myInfo(HttpSession session, Model model) {
+		memberDetailService.memInfo(session, model);
+		return "member/memDetail";
+	}
+	@RequestMapping("memUpdate")
+	public String memUpdate(HttpSession session, Model model) {
+		memberDetailService.memInfo(session, model);
+		return "member/memUpdate";
+	}
+	@RequestMapping("memUpdateOk")
+	public String updateOk(MemberCommand memberCommand, HttpSession session) {
+		int i = memberUpdateService.memUpdate(memberCommand, session);
+		if(i==1) {
+			return "redirect:myInfo";
+		}else {
+			return "redirect:memUpdate";
+		}
+	}
+	@RequestMapping("memDelete")
+	public String memDelete() {
+		return "member/memDelete";
+	}
+	@RequestMapping("memDeleteOk")
+	public String memDeleteOk(@RequestParam(value="membPw") String membPw, HttpSession session) {
+		memberDeleteOkService.del(membPw, session);
+		session.invalidate();
+		return "redirect:/";
+	}
+	@RequestMapping("pwchange")
+	public String pwchange() {
+		return "member/pwChange";
+	}
+	@Autowired
+	BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	@RequestMapping("pwChangeCnf")
+	public String pwChangeCnf(HttpSession session, @RequestParam(value="membPw") String membPw) {
+		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
+		String userPw = authInfo.getUserPw();
+		if(bcryptPasswordEncoder.matches(membPw, userPw)) {
+			return "member/pwChangeCnf";
+		}else {
+			return "member/pwChange";
+		}
+	}
+	@Autowired
+	MemberPwChangeService memberPwChangeService;
+	
+	@RequestMapping("pwChangeOk")
+	public String pwChangeOk(HttpSession session, 
+							@RequestParam(value="membPw")String membPw,
+							@RequestParam(value="newPw")String newPw,
+							@RequestParam(value="newPwCon")String newPwCon) {
+		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
+		String userId = authInfo.getUserId();
+		String pw = authInfo.getUserPw();
+		if(bcryptPasswordEncoder.matches(membPw, pw)) {
+			if(newPw.equals(newPwCon)) {
+				// 비밀번호 변경
+				newPw = bcryptPasswordEncoder.encode(newPw);
+				memberPwChangeService.pwOk(userId, newPw);
+				return "redirect:/";
+			}else {
+				return "member/pwChangeCnf";
+			}
+		}else {
+			return "member/pwChangeCnf";
+		}
 	}
 }
 

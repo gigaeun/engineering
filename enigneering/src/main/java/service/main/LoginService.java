@@ -25,7 +25,6 @@ public class LoginService {
 				////// 로그인 정보를 가진 session
 				session.setAttribute("authInfo", authInfo);
 				///////
-				
 				session.removeAttribute("pwFail");
 				session.removeAttribute("userFail");
 			}else {
