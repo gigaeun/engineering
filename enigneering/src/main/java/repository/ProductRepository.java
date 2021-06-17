@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import model.CatDTO;
+import model.ProductDTO;
 
 public class ProductRepository {
 	@Autowired
@@ -20,5 +21,9 @@ public class ProductRepository {
 	public String autoNum() {
 		statement = namespace +".autoNum";
 		return sqlSession.selectOne(statement);
+	}
+	public void prodInsert(ProductDTO dto) {
+		statement = namespace +".prodInsert";
+		sqlSession.insert(statement, dto);
 	}
 }

@@ -54,5 +54,6 @@ public class ProductJoinService {
 			}
 		}
 		dto.setProdImage(goodsImage);
+		productRepository.prodInsert(dto);
 	}
 }
