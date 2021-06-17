@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import model.ProductDTO;
+import model.CatDTO;
 import repository.ProductRepository;
 
 public class ProductAutoNumService {
@@ -13,7 +13,7 @@ public class ProductAutoNumService {
 	ProductRepository productRepository;
 	public void autoNum(Model model) {
 		String autoNum = productRepository.autoNum();
-		List<ProductDTO> list = productRepository.catList();
+		List<CatDTO> list = productRepository.catList();
 		model.addAttribute("autoNum", autoNum);
 		model.addAttribute("lists", list);
 	}

@@ -8,14 +8,14 @@
 <title>productForm.jsp</title>
 </head>
 <body>
-상품등록페이지입니다.<br />
-<form action="">
+상품등록 페이지입니다.<br />
+<form action="prodJoinOk" mehtod="post" enctype="multipart/form-data">
 <table border = 1>
 	<tr><th>상품번호</th>
 		<td><input type="text" name="prodNo" value="${autoNum }"/></td></tr>
 	<tr><th>카테고리</th>
 		<td>
-			<select>
+			<select name="catNum">
 				<c:forEach items="${lists }" var="dto">
 					<option value="${dto.catNum }">${dto.catName }</option>
 				</c:forEach>
